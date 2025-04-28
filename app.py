@@ -20,7 +20,7 @@ def load_model():
 
 interpreter = load_model()
 
-# App Title
+# App Title and Instructions
 st.title('🩻 Pneumonia Detection from Chest X-Ray')
 st.subheader('Upload a chest X-ray image below to get a prediction!')
 
@@ -30,13 +30,14 @@ uploaded_file = st.file_uploader("Choose an X-ray image...", type=["jpg", "jpeg"
 if uploaded_file is not None:
     st.success("✅ File uploaded successfully!")
 
-    # Read and preprocess the image
+    # Read and preprocess the uploaded image
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, 1)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    st.image(image, caption='Uploaded X-Ray Image', use_column_width=True)
 
-    # Resize and normalize
+    st.image(image, caption='Uploaded X-Ray Image', use_container_width=True)
+
+    # Preprocess the image for model input
     img_resized = cv2.resize(image, (150, 150))
     img_normalized = img_resized / 255.0
     img_input = np.expand_dims(img_normalized, axis=0).astype(np.float32)
@@ -47,14 +48,14 @@ if uploaded_file is not None:
     interpreter.set_tensor(input_details[0]['index'], img_input)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
-    prediction = output_data[0][0]
+    prediction = output_data[0][0]  # Get the single output value
 
     probability = prediction * 100
 
-    # Show prediction
+    # Display prediction result
     if prediction > 0.5:
         st.error(f"🛑 Pneumonia detected with {probability:.2f}% confidence!")
     else:
-        st.success(f"✅ Normal X-ray detected with {(100 - probability):.2f}% confidence!")
+        st.success(f"✅ Normal chest X-ray with {(100 - probability):.2f}% confidence!")
 else:
     st.info('👈 Please upload a chest X-ray image to get started.')
