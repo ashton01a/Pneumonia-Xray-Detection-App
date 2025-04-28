@@ -41,12 +41,22 @@ _(Replace this with your real app link once ready!)_
 
 ---
 
-## 🎯 Future Improvements
+## 🛠 Model Compression and Accuracy Note
 
-- Reintroduce model prediction once optimized for cloud hosting
-- Add Grad-CAM explainability heatmaps
-- Enhance frontend with Streamlit themes and styling
-- Deploy with lighter TensorFlow models for faster prediction
+This application uses a **compressed TensorFlow Lite (TFLite) version** of the pneumonia detection model for faster cloud deployment.  
+Due to compression optimizations, **prediction confidence may vary slightly** from original model performance.
+
+**Goal:** Prioritize speed, lightweight deployment, and user accessibility in cloud environments like Streamlit Cloud.
+
+---
+
+## 🚀 Future Improvements
+
+- 🔥 Retrain a lightweight pneumonia detection model using **Quantization-Aware Training (QAT)** for improved TFLite accuracy.
+- 🔥 Integrate **Grad-CAM** heatmaps to visualize which regions of the X-ray influenced the prediction.
+- 🔥 Add batch prediction support for uploading multiple X-ray files at once.
+- 🔥 Explore deploying a containerized version using **Docker** and **Render.com** to support larger models and scalable hosting.
+- 🔥 Implement detailed prediction reports and download options for clinicians or users.
 
 ---
 
